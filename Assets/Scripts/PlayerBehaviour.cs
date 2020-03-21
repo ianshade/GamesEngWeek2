@@ -22,7 +22,6 @@ public class PlayerBehaviour : MonoBehaviour
 
     void Update()
     {
-        transform.eulerAngles = Vector3.zero;
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
         transform.position += move * moveSpeed * Time.deltaTime;
         if (Input.GetKey(KeyCode.W) && isClimbing)
