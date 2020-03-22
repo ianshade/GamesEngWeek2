@@ -6,27 +6,39 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public float jumpHeight;
     public float moveSpeed;
+    public float climbSpeed;
+    [SerializeField]
     private bool isGrounded;
+    [SerializeField]
     private bool isClimbing = false;
+    [SerializeField]
+    private bool climbed = false;
+    [SerializeField]
     private bool canJump = true;
+    private bool facingRight = true;
     public SceneBehaviour sceneBehaviour;
     private Rigidbody2D myRigidbody;
     private Collider2D myCollider;
-
+    private Animator myAnimator;
 
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
+        myAnimator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
-        transform.position += move * moveSpeed * Time.deltaTime;
-        if (Input.GetKey(KeyCode.W) && isClimbing)
+        float move = Input.GetAxis("Horizontal");
+        myRigidbody.velocity = new Vector2(move * moveSpeed, myRigidbody.velocity.y);
+        if (Input.GetKeyDown(KeyCode.W) && isClimbing)
         {
-            transform.position += Vector3.up * moveSpeed * Time.deltaTime;
+            climbed = false;
+        }
+        if (Input.GetKey(KeyCode.W) && isClimbing && !climbed)
+        {
+            transform.position += Vector3.up * climbSpeed * Time.deltaTime;
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded && canJump)
         {
@@ -34,8 +46,21 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.S) && isClimbing)
         {
-            transform.position += Vector3.down * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.down * climbSpeed * Time.deltaTime;
         }
+        myAnimator.SetFloat("speed", Mathf.Abs(myRigidbody.velocity.x));
+        if (move > 0 && !facingRight)
+            ReverseImage();
+        else if (move < 0 && facingRight)
+            ReverseImage();
+    }
+
+    void ReverseImage()
+    {
+        facingRight = !facingRight;
+        Vector2 scale = myRigidbody.transform.localScale;
+        scale.x *= -1;
+        myRigidbody.transform.localScale = scale;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -45,7 +70,6 @@ public class PlayerBehaviour : MonoBehaviour
             case "Ladder":
                 isClimbing = true;
                 myRigidbody.gravityScale = 0.0f;
-                myRigidbody.velocity = Vector2.zero;
                 Physics2D.IgnoreCollision(other.gameObject.GetComponent<LadderBehaviour>().GetGroundCollider(), myCollider, true);
                 break;
             case "LadderBottom":
@@ -63,12 +87,21 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.tag == "Ladder")
+        {
+            myRigidbody.velocity = Vector2.zero;
+        }
+    }
+
     void OnTriggerExit2D(Collider2D other)
     {
         switch (other.tag)
         {
             case "Ladder":
                 isClimbing = false;
+                climbed = true;
                 myRigidbody.gravityScale = 1.0f;
                 Physics2D.IgnoreCollision(other.gameObject.GetComponent<LadderBehaviour>().GetGroundCollider(), myCollider, false);
                 break;
