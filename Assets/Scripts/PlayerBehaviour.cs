@@ -31,7 +31,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         float move = Input.GetAxis("Horizontal");
-        float velocityX = move * moveSpeed;
+        float velocityX = move * moveSpeed * (isGrounded ? 1.0f : 0.5f);
         float velocityY = myRigidbody.velocity.y;
         if (Input.GetKeyDown(KeyCode.W) && isClimbing)
         {
