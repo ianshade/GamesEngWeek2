@@ -31,28 +31,42 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         float move = Input.GetAxis("Horizontal");
-        myRigidbody.velocity = new Vector2(move * moveSpeed, myRigidbody.velocity.y);
+        float velocityX = move * moveSpeed;
+        float velocityY = myRigidbody.velocity.y;
         if (Input.GetKeyDown(KeyCode.W) && isClimbing)
         {
             climbed = false;
+            myAnimator.SetBool("climbing", true);
         }
         if (Input.GetKey(KeyCode.W) && isClimbing && !climbed)
         {
-            transform.position += Vector3.up * climbSpeed * Time.deltaTime;
+            velocityY = 1.0f * climbSpeed;
         }
         if (Input.GetKeyDown(KeyCode.W) && isGrounded && canJump)
         {
             myRigidbody.AddForce(Vector3.up * jumpHeight);
+            velocityY = 1.0f * climbSpeed;
         }
         if (Input.GetKey(KeyCode.S) && isClimbing)
         {
-            transform.position += Vector3.down * climbSpeed * Time.deltaTime;
+            velocityY = -1.0f * climbSpeed;
         }
-        myAnimator.SetFloat("speed", Mathf.Abs(myRigidbody.velocity.x));
+        if (Input.GetKeyDown(KeyCode.S) && isClimbing)
+        {
+            myAnimator.SetBool("climbing", true);
+        }
+        if (isClimbing)
+        {
+            myAnimator.SetFloat("climbingSpeed", velocityY);
+            Debug.Log(velocityY);
+        }
+        myAnimator.SetFloat("speed", Mathf.Abs(velocityX));
         if (move > 0 && !facingRight)
             ReverseImage();
         else if (move < 0 && facingRight)
             ReverseImage();
+
+        myRigidbody.velocity = new Vector2(velocityX, velocityY);
     }
 
     void ReverseImage()
@@ -102,6 +116,7 @@ public class PlayerBehaviour : MonoBehaviour
             case "Ladder":
                 isClimbing = false;
                 climbed = true;
+                myAnimator.SetBool("climbing", false);
                 myRigidbody.gravityScale = 1.0f;
                 Physics2D.IgnoreCollision(other.gameObject.GetComponent<LadderBehaviour>().GetGroundCollider(), myCollider, false);
                 break;

@@ -221,7 +221,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.8}
   m_EdgeRadius: 0
 --- !u!212 &153760790
 SpriteRenderer:
@@ -420,7 +420,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &263272948
 MonoBehaviour:
@@ -677,7 +677,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &279729268
 MonoBehaviour:
@@ -707,7 +707,7 @@ GameObject:
   - component: {fileID: 347307823}
   - component: {fileID: 347307824}
   m_Layer: 0
-  m_Name: Square (6)
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -797,7 +797,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 248e40ba87a2f8a40a401a836b87b62b, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &347307822
 BoxCollider2D:
@@ -837,9 +837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3f4e450227dc445ad44819cb15815f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 250
+  jumpHeight: 150
   moveSpeed: 10
-  climbSpeed: 4
+  climbSpeed: 2
   isGrounded: 0
   isClimbing: 0
   climbed: 0
@@ -2331,7 +2331,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1630471813
 MonoBehaviour:
@@ -2453,7 +2453,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &1977006773
 MonoBehaviour:
