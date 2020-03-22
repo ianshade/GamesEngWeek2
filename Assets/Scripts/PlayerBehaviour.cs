@@ -58,7 +58,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (isClimbing)
         {
             myAnimator.SetFloat("climbingSpeed", velocityY);
-            Debug.Log(velocityY);
         }
         myAnimator.SetFloat("speed", Mathf.Abs(velocityX));
         if (move > 0 && !facingRight)
